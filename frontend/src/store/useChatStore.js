@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
-import { axiosInstance } from "../lib/axios";
+import axios from "axiox";
 import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set, get) => ({
@@ -13,7 +13,7 @@ export const useChatStore = create((set, get) => ({
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
-      const res = await axiosInstance.get("https://chat-application-58k4.onrender.com/messages/users");
+      const res = await axios.get("https://chat-application-58k4.onrender.com/api/messages/users");
       set({ users: res.data });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -25,7 +25,7 @@ export const useChatStore = create((set, get) => ({
   getMessages: async (userId) => {
     set({ isMessagesLoading: true });
     try {
-      const res = await axiosInstance.get(`https://chat-application-58k4.onrender.com/messages/${userId}`);
+      const res = await axios.get(`https://chat-application-58k4.onrender.com/api/messages/${userId}`);
       set({ messages: res.data });
     } catch (error) {
       toast.error(error.response.data.message);
@@ -36,7 +36,7 @@ export const useChatStore = create((set, get) => ({
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     try {
-      const res = await axiosInstance.post(`https://chat-application-58k4.onrender.com/messages/send/${selectedUser._id}`, messageData);
+      const res = await axios.post(`https://chat-application-58k4.onrender.com/api/messages/send/${selectedUser._id}`, messageData);
       set({ messages: [...messages, res.data] });
     } catch (error) {
       toast.error(error.response.data.message);

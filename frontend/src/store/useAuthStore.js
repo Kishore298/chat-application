@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { axiosInstance } from "../lib/axios.js";
+import axios from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
@@ -16,7 +16,7 @@ export const useAuthStore = create((set, get) => ({
 
   checkAuth: async () => {
     try {
-      const res = await axiosInstance.get("https://chat-application-58k4.onrender.com/auth/check");
+      const res = await axios.get("https://chat-application-58k4.onrender.com/api/auth/check");
 
       set({ authUser: res.data });
       get().connectSocket();
@@ -31,7 +31,7 @@ export const useAuthStore = create((set, get) => ({
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
-      const res = await axiosInstance.post("https://chat-application-58k4.onrender.com/auth/signup", data);
+      const res = await axios.post("https://chat-application-58k4.onrender.com/api/auth/signup", data);
       set({ authUser: res.data });
       toast.success("Account created successfully");
       get().connectSocket();
@@ -45,7 +45,7 @@ export const useAuthStore = create((set, get) => ({
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
-      const res = await axiosInstance.post("https://chat-application-58k4.onrender.com/auth/login", data);
+      const res = await axios.post("https://chat-application-58k4.onrender.com/api/auth/login", data);
       set({ authUser: res.data });
       toast.success("Logged in successfully");
 
@@ -59,7 +59,7 @@ export const useAuthStore = create((set, get) => ({
 
   logout: async () => {
     try {
-      await axiosInstance.post("https://chat-application-58k4.onrender.com/auth/logout");
+      await axios.post("https://chat-application-58k4.onrender.com/api/auth/logout");
       set({ authUser: null });
       toast.success("Logged out successfully");
       get().disconnectSocket();
@@ -71,7 +71,7 @@ export const useAuthStore = create((set, get) => ({
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
-      const res = await axiosInstance.put("https://chat-application-58k4.onrender.com/auth/update-profile", data);
+      const res = await axios.put("https://chat-application-58k4.onrender.com/api/auth/update-profile", data);
       set({ authUser: res.data });
       toast.success("Profile updated successfully");
     } catch (error) {
